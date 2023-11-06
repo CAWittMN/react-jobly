@@ -1,11 +1,8 @@
-import { Link, NavLink } from "react-router-dom";
-import { useContext } from "react";
-import { CurrentUserContext } from "../context/CurrentUserContext";
+import { NavLink } from "react-router-dom";
 
-const NavBar = () => {
-  const { currentUser } = useContext(CurrentUserContext);
+const NavBar = ({ currentUser = null, logout, applicationIds }) => {
   return (
-    <nav className="NavBar navbar navbar-expand-sm bg-primary fixed-top">
+    <nav className="NavBar navbar navbar-expand-sm bg-primary fixed-top position-fixed">
       <div className="container-lg">
         <div className="navbar-brand">
           <NavLink
@@ -16,12 +13,36 @@ const NavBar = () => {
           </NavLink>
         </div>
         {currentUser ? (
-          <div className="navbar-nav">
-            <NavLink to="/companies">Companies</NavLink>
-            <NavLink to="/jobs">Jobs</NavLink>
-            <NavLink to="/profile">Profile</NavLink>
-            <Link to="/logout">Log out</Link>
-          </div>
+          <ul className="navbar-nav">
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/companies">
+                Companies
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/jobs">
+                Jobs
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink
+                className={
+                  applicationIds.size > 0 ? "nav-link" : "nav-link disabled"
+                }
+                to="/applications"
+              >
+                Applications
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/profile">
+                Profile
+              </NavLink>
+            </li>
+            <button onClick={() => logout()} className="btn">
+              Log out
+            </button>
+          </ul>
         ) : (
           <ul className="navbar-nav">
             <li className="nav-item">

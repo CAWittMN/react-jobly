@@ -1,23 +1,23 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import JoblyApi from "../api";
 import EditUserForm from "../components/EditUserForm";
 import LoadingIcon from "../components/LoadingIcon";
-import { useParams } from "react-router-dom";
+import { CurrentUserContext } from "../context/CurrentUserContext";
 
 const UserProfilePage = () => {
-  const { username } = useParams();
+  const { currentUser } = useContext(CurrentUserContext);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
     const getUser = async () => {
-      const user = await JoblyApi.getUser(username);
+      const user = await JoblyApi.getUser(currentUser.username);
       setUser(user);
     };
     getUser();
-  }, [username]);
+  }, [currentUser]);
 
   const updateUser = async (data) => {
-    const user = await JoblyApi.updateUser(username, data);
+    const user = await JoblyApi.updateUser(currentUser.username, data);
     setUser(user);
   };
 
@@ -26,7 +26,7 @@ const UserProfilePage = () => {
       {user ? (
         <EditUserForm user={user} updateUser={updateUser} />
       ) : (
-        <LoadingIcon />
+        <LoadingIcon message="Loading Profile Info..." />
       )}
     </div>
   );

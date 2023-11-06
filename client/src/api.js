@@ -26,7 +26,7 @@ class JoblyApi {
     try {
       return (await axios({ url, method, data, params, headers })).data;
     } catch (err) {
-      console.error("API Error:", err.response);
+      console.error("API Error:", err);
       let message = err.response.data.error.message;
       throw Array.isArray(message) ? message : [message];
     }
@@ -45,7 +45,7 @@ class JoblyApi {
   /** Get all companies */
   static async getCompanies(search = null) {
     if (search) {
-      let res = await this.request(`companies`, { search });
+      let res = await this.request(`companies`, search);
       return res.companies;
     } else {
       let res = await this.request(`companies`);
@@ -64,7 +64,7 @@ class JoblyApi {
   /** Get all jobs */
   static async getJobs(search = null) {
     if (search) {
-      let res = await this.request(`jobs`, { search });
+      let res = await this.request(`jobs`, search);
       return res.jobs;
     } else {
       let res = await this.request(`jobs`);
@@ -75,7 +75,11 @@ class JoblyApi {
   // Application Routes
 
   static async applyToJob(username, jobId) {
-    let res = await this.request(`${username}/jobs/${jobId}/`, {}, "post");
+    let res = await this.request(
+      `users/${username}/jobs/${jobId}/`,
+      {},
+      "post"
+    );
     return res.message;
   }
 
@@ -88,9 +92,9 @@ class JoblyApi {
   }
 
   /** Get all users */
-  static async getUsers(search = null) {
-    if (search) {
-      let res = await this.request(`users`, { search });
+  static async getUsers(data = null) {
+    if (data) {
+      let res = await this.request(`users`, data);
       return res.users;
     } else {
       let res = await this.request(`users`);
@@ -111,30 +115,39 @@ class JoblyApi {
   }
 
   /** Register a user */
-  static async registerUser(data) {
+  static async signup(data) {
     let res = await this.request(`auth/register`, data, "post");
+    this.token = res.token;
     return res.token;
   }
 
   /** Login a user */
-  static async loginUser(data) {
+  static async login(data) {
     let res = await this.request(`auth/token`, data, "post");
+    this.token = res.token;
     return res.token;
   }
 
   /** Get user from token */
-  static async getUserFromToken(token) {
-    let res = await this.request(`auth/me`, {}, "get");
-    return res.user;
+  static async getCurrentUsername() {
+    let user = await this.request(`auth/user`);
+    return user.username;
+  }
+
+  /** Get jobs based on provided id's */
+  static async getJobsFromIds(ids) {
+    const idArray = Array.from(ids);
+    let res = await this.request(`jobs/`, { ids: idArray });
+    return res.jobs;
   }
 
   // obviously, you'll add a lot here ...
 }
 
 // for now, put token ("testuser" / "password" on class)
-JoblyApi.token =
+/**JoblyApi.token =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZ" +
   "SI6InRlc3R1c2VyIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTU5ODE1OTI1OX0." +
-  "FtrMwBQwe6Ue-glIFgz_Nf8XxRT2YecFCiSpYL0fCXc";
+  "FtrMwBQwe6Ue-glIFgz_Nf8XxRT2YecFCiSpYL0fCXc";*/
 
 export default JoblyApi;

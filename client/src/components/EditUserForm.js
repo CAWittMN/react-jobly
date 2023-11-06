@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const EditUserForm = ({ user, editUser }) => {
+const EditUserForm = ({ user, updateUser }) => {
+  const navigate = useNavigate();
+
   const INITIAL_STATE = {
     firstName: user.firstName,
     lastName: user.lastName,
@@ -17,44 +20,65 @@ const EditUserForm = ({ user, editUser }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    editUser(formData);
+    updateUser(formData);
     setFormData(INITIAL_STATE);
+    navigate("/jobs");
   };
 
   return (
-    <form className="EditUserForm" onSubmit={handleSubmit}>
-      <label htmlFor="firstName">First Name</label>
-      <input
-        id="firstName"
-        name="firstName"
-        value={formData.firstName}
-        onChange={handleChange}
-      />
-      <label htmlFor="lastName">Last Name</label>
-      <input
-        id="lastName"
-        name="lastName"
-        value={formData.lastName}
-        onChange={handleChange}
-      />
-      <label htmlFor="email">Email</label>
-      <input
-        id="email"
-        name="email"
-        value={formData.email}
-        onChange={handleChange}
-      />
-      <label htmlFor="password">Confirm password to make changes:</label>
-      <input
-        id="password"
-        name="password"
-        type="password"
-        value={formData.password}
-        onChange={handleChange}
-      />
-      <button>Save Changes</button>
+    <form
+      className="EditUserForm container-sm w-50 rounded-5 shadow p-3"
+      onSubmit={handleSubmit}
+    >
+      <div className="form-group rounded-top-4 border-0 bg-body-tertiary border-bottom pb-3">
+        <label>First Name</label>
+        <input
+          className="form-control w-75 m-auto"
+          name="firstName"
+          value={formData.firstName}
+          onChange={handleChange}
+          autoComplete="given-name"
+          required
+        />
+      </div>
+      <div className="form-group border-0 bg-body-tertiary border-bottom pb-3">
+        <label>Last Name</label>
+        <input
+          className="form-control w-75 m-auto"
+          name="lastName"
+          value={formData.lastName}
+          onChange={handleChange}
+          autoComplete="family-name"
+          required
+        />
+      </div>
+      <div className="form-group border-0 bg-body-tertiary border-bottom pb-3">
+        <label>Email</label>
+        <input
+          className="form-control w-75 m-auto"
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          autoComplete="email"
+          required
+        />
+      </div>
+      <div className="form-group border-0 bg-body-tertiary border-bottom pb-3">
+        <label>Confirm password to make changes:</label>
+        <input
+          className="form-control w-75 m-auto"
+          type="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          autoComplete="current-password"
+          required
+        />
+      </div>
+      <button className="btn mt-3 btn-primary float-right">Submit</button>
     </form>
   );
 };

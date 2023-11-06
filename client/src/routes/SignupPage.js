@@ -1,11 +1,13 @@
 import SignupForm from "../components/SignupForm";
-import JoblyApi from "../api";
+import { CurrentUserContext } from "../context/CurrentUserContext";
+import { useContext } from "react";
 
 const SignupPage = () => {
+  const { signup } = useContext(CurrentUserContext);
   return (
     <div className="SignupPage">
       <h1 className="mb-3">Sign Up</h1>
-      <SignupForm signup={JoblyApi.signupUser} />
+      <SignupForm signup={signup} />
     </div>
   );
 };

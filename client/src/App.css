@@ -1,1 +1,8 @@
-
+.App {
+  background-image: url("./pxfuel.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+  min-height: 100vh;
+}

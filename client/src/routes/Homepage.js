@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
+import { CurrentUserContext } from "../context/CurrentUserContext";
+import { useContext } from "react";
 
-const Homepage = ({ currentUser }) => {
+const Homepage = () => {
+  const { currentUser } = useContext(CurrentUserContext);
   return (
     <div className="Homepage">
       <div className="container-sm p-5 shadow rounded-4 my-3">
