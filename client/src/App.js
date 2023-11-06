@@ -40,7 +40,7 @@ const App = () => {
   const login = async (loginData) => {
     try {
       const token = await JoblyApi.login(loginData);
-      const user = await JoblyApi.getCurrentUser();
+      const user = await JoblyApi.getCurrentUsername();
       setToken(token);
       setCurrentUser(user);
       setApplicationIds(new Set(user.applications));

@@ -44,7 +44,7 @@ const CompanySearchForm = ({ search }) => {
           value={formData["maxEmployees"]}
           onChange={handleChange}
         />
-        <label htmlFor="floatingMaxEmployees">Minimum Employees</label>
+        <label htmlFor="floatingMaxEmployees">Maximum Employees</label>
       </div>
       <div className="me-3 form-floating col-md">
         <input
